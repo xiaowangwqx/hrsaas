@@ -16,7 +16,11 @@
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <!--自定义指令  v-imageerror="defaultImage" -->
-          <img :src="staffPhoto" class="user-avatar" />
+          <img
+            :src="staffPhoto"
+            v-imageerror="defaultImage"
+            class="user-avatar"
+          />
           <span class="name">{{ name }}</span>
           <i class="el-icon-caret-bottom" />
         </div>

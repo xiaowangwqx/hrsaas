@@ -1,6 +1,6 @@
 // 负责管理所有自定义指令 
 
-export const imagerror = {
+export const imageerror = {
     // 指令对象
     // inserted会在当前dom元素插入到节点之后执行
     inserted(dom, options) {
