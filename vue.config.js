@@ -6,7 +6,7 @@ function resolve(dir) {
     return path.join(__dirname, dir)
 }
 
-const name = defaultSettings.title || 'vue Admin Template' // page title
+const name = defaultSettings.title || 'vue Admin Template' // page title 网站名称
 
 // If your port is set to 80,
 // use administrator privileges to execute the command line.
@@ -36,6 +36,14 @@ module.exports = {
             warnings: false,
             errors: true
         },
+        // 配置反向代理
+        proxy: {
+            // 当地址中有/api时 会触发代理机制
+            '/api': {
+                target: 'http://ihrm-java.itheima.net/', //跨域请求的地址
+                changeOrigin: true, //是否跨域
+            }
+        }
 
     },
     configureWebpack: {
