@@ -17,7 +17,7 @@ const port = process.env.port || process.env.npm_config_port || 9528 // dev port
 
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
-    lintOnSave: false,
+
     /**
      * You will need to set publicPath if you plan to deploy your site under a sub path,
      * for example GitHub Pages. If you plan to deploy your site to https://foo.github.io/bar/,
@@ -29,6 +29,7 @@ module.exports = {
     outputDir: 'dist',
     assetsDir: 'static',
     lintOnSave: process.env.NODE_ENV === 'development',
+    lintOnSave: false,
     productionSourceMap: false,
     devServer: {
         port: port,
@@ -39,7 +40,8 @@ module.exports = {
         },
         // 配置反向代理
         proxy: {
-            // 当地址中有/api时 会触发代理机制
+            // 当地址中有/api时 会触发代理机制 
+            // http://itcgq.com:8888/
             '/api': {
                 target: 'http://ihrm-java.itheima.net/', //跨域请求的地址
                 changeOrigin: true, //是否跨域

@@ -1,4 +1,4 @@
-import { getToken, setToken, removeToken, setTimeStamp, getTimeStamp } from '@/utils/auth'
+import { getToken, setToken, removeToken, setTimeStamp } from '@/utils/auth'
 import { login, getUserInfo, getUserDetailById } from '@/api/user'
 
 // 状态

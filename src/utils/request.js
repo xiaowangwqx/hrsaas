@@ -8,6 +8,7 @@ const TimeOut = 3600 //定义超时时间
 
 const service = axios.create({
     baseURL: process.env.VUE_APP_BASE_API,
+    // baseURL: 'http://itcgq.com:8888/',
     timeout: 5000 //超时时间
 })
 
@@ -19,7 +20,7 @@ service.interceptors.request.use(config => {
         // 在有token的情况下 才有必要检查时间戳是否存在
         if (checkTimeOut()) {
             // 为true表示 token失效
-            store.dispatch(['user/logout']) //退出操作
+            store.dispatch('user/logout') //退出操作
             router.push('/login')
             return Promise.reject(new Error('token超时'))
         }
@@ -43,7 +44,7 @@ service.interceptors.response.use(response => {
     // error里面有response的对象
     if (error.response && error.response.data && error.response.data.code === 10002) {
         // 表示后端提示 登录超时
-        store.dispatch('/user/logout') //退出
+        store.dispatch('user/logout') //退出
         router.push('/login')
     } else {
         Message.error(error.message) //提示错误信息
@@ -52,7 +53,7 @@ service.interceptors.response.use(response => {
 })
 
 // 检查是否超市
-// 超市逻辑 （当前时间戳-缓存中的时间戳） 是否大于时间差
+// 超时逻辑 （当前时间戳-缓存中的时间戳） 是否大于时间差
 function checkTimeOut() {
     var currentTime = Date.now()
     var timeStamp = getTimeStamp()
