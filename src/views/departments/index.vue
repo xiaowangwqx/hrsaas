@@ -7,10 +7,10 @@
         <!-- 树形结构 -->
         <!-- 头部 -->
         <tree-tools
-          :treeNode="company"
-          :isRoot="true"
+          :tree-node="company"
+          :is-root="true"
           @addDepts="addDepts"
-        ></tree-tools>
+        />
 
         <el-tree
           :data="departs"
@@ -20,44 +20,44 @@
           <!-- 传入插槽内容  插槽内容会循环多次 有多少节点就循环多少次 -->
           <tree-tools
             slot-scope="{ data }"
-            :treeNode="data"
+            :tree-node="data"
             @delDepets="getDeparments"
             @addDepts="addDepts"
             @editDepts="editDepts"
-          ></tree-tools>
+          />
         </el-tree>
       </el-card>
     </div>
     <!-- 放置新增弹框组件 -->
     <add-dept
-      :showDialog.sync="showDialog"
-      :treeNode="node"
-      @addDepts="getDeparments"
       ref="addDept"
-    ></add-dept>
+      :show-dialog.sync="showDialog"
+      :tree-node="node"
+      @addDepts="getDeparments"
+    />
   </div>
 </template>
 
 <script>
 import TreeTools from "./components/tree-tools";
 import AddDept from "./components/add-dept";
-import { getDeparments } from "@/api/deparments";
+import { getDepartments } from "@/api/departments";
 import { transListToTreeData } from "@/utils/index";
 
 export default {
   components: {
     TreeTools,
-    AddDept,
+    AddDept
   },
   data() {
     return {
       defaultProps: {
-        label: "name",
+        label: "name"
       },
       departs: [],
       company: { name: "", manager: "" },
       showDialog: false,
-      node: null, //记录当前点击的node节点
+      node: null //记录当前点击的node节点
     };
   },
   created() {
@@ -65,7 +65,7 @@ export default {
   },
   methods: {
     async getDeparments() {
-      const result = await getDeparments();
+      const result = await getDepartments();
       this.company = { name: result.companyName, manager: "负责人", id: "" };
       this.departs = transListToTreeData(result.depts, "");
       console.log(result);
@@ -79,8 +79,8 @@ export default {
       this.showDialog = true;
       this.node = node;
       this.$refs.addDept.getDepartDetail(node.id);
-    },
-  },
+    }
+  }
 };
 </script>
 

@@ -1,27 +1,40 @@
 <template>
-  <el-dialog :title="showTitle" :visible="showDialog" @close="btnCancel">
+  <el-dialog
+    :title="showTitle"
+    :visible="showDialog"
+    @close="btnCancel"
+  >
     <!-- 表单数据 -->
     <el-form
+      ref="deptForm"
       label-width="120px"
       :model="formData"
       :rules="rules"
-      ref="deptForm"
     >
-      <el-form-item label="部门名称" prop="name">
+      <el-form-item
+        label="部门名称"
+        prop="name"
+      >
         <el-input
           v-model="formData.name"
           style="width: 80%"
           placeholder="1-50个字符"
-        ></el-input>
+        />
       </el-form-item>
-      <el-form-item label="部门编码" prop="code">
+      <el-form-item
+        label="部门编码"
+        prop="code"
+      >
         <el-input
           v-model="formData.code"
           style="width: 80%"
           placeholder="1-50个字符"
-        ></el-input>
+        />
       </el-form-item>
-      <el-form-item label="部门负责人" prop="manager">
+      <el-form-item
+        label="部门负责人"
+        prop="manager"
+      >
         <el-select
           v-model="formData.manager"
           style="width: 80%"
@@ -33,24 +46,42 @@
             :key="item.id"
             :label="item.username"
             :value="item.username"
-          ></el-option>
+          />
         </el-select>
       </el-form-item>
-      <el-form-item label="部门介绍" prop="introduce">
+      <el-form-item
+        label="部门介绍"
+        prop="introduce"
+      >
         <el-input
+          v-model="formData.introduce"
           style="width: 80%"
           placeholder="1-300个字符"
           type="textarea"
           :rows="3"
-          v-model="formData.introduce"
-        ></el-input>
+        />
       </el-form-item>
     </el-form>
     <!-- 确定和取消 -->
-    <el-row slot="footer" type="flex" justify="center">
+    <el-row
+      slot="footer"
+      type="flex"
+      justify="center"
+    >
       <el-col :span="6">
-        <el-button size="small" @click="btnCancel">取消</el-button>
-        <el-button type="primary" size="small" @click="btnOk">确定</el-button>
+        <el-button
+          size="small"
+          @click="btnCancel"
+        >
+          取消
+        </el-button>
+        <el-button
+          type="primary"
+          size="small"
+          @click="btnOk"
+        >
+          确定
+        </el-button>
       </el-col>
     </el-row>
   </el-dialog>
@@ -58,27 +89,27 @@
 
 <script>
 import {
-  getDeparments,
+  getDepartments,
   addDepartments,
   getDepartDetail,
-  updateDepartments,
-} from "@/api/deparments";
+  updateDepartments
+} from "@/api/departments";
 import { getEmployeesSimple } from "@/api/employees";
 export default {
   props: {
     showDialog: {
       type: Boolean,
-      default: false,
+      default: false
     },
     treeNode: {
       type: Object,
-      default: null,
-    },
+      default: null
+    }
   },
   data() {
     // 检查部门名称是否重复
     const checkNameRepeat = async (rule, value, callback) => {
-      const { depts } = await getDeparments();
+      const { depts } = await getDepartments();
       // 找同级部门下有没有和value相同的数据
       // 找到所有子部门
       let isRepeat = false;
@@ -88,15 +119,15 @@ export default {
         // 编辑的数据本来就有 要判断在同级部门下 名称不能和其他名称重复
         isRepeat = depts
           .filter(
-            (item) =>
+            item =>
               item.pid === this.treeNode.pid && item.id !== this.treeNode.id
           )
-          .some((item) => item.name === value);
+          .some(item => item.name === value);
       } else {
         //没有id就是新增模式
         isRepeat = depts
-          .filter((item) => item.pid === this.treeNode.id)
-          .some((item) => item.name === value);
+          .filter(item => item.pid === this.treeNode.id)
+          .some(item => item.name === value);
       }
 
       // 如果isRepeat 为true 表示找到了一样的名字
@@ -106,17 +137,17 @@ export default {
     };
     // 检查部门编码 在整个模块下不能重复
     const checkCodeRepeat = async (rule, value, callback) => {
-      const { depts } = await getDeparments();
+      const { depts } = await getDepartments();
       let isRepeat = false;
       if (this.formData.id) {
         // 编辑模式
         isRepeat = depts
-          .filter((item) => item.id !== this.treeNode.id)
-          .some((item) => item.code === value && value);
+          .filter(item => item.id !== this.treeNode.id)
+          .some(item => item.code === value && value);
       } else {
         // 新增模式
         // 历史数据可能没有code 所以强制value不能为空
-        isRepeat = depts.some((item) => item.code === value && value);
+        isRepeat = depts.some(item => item.code === value && value);
       }
 
       isRepeat
@@ -129,14 +160,14 @@ export default {
         name: "",
         code: "",
         manager: "",
-        introduce: "",
+        introduce: ""
       },
       // 校验规则
       rules: {
         name: [
           { required: true, message: "部门名称不能为空", trigger: "blur" },
           { min: 1, max: 50, message: "部门名称长度为1-50个字符" },
-          { trigger: "blur", validator: checkNameRepeat },
+          { trigger: "blur", validator: checkNameRepeat }
         ],
         code: [
           { required: true, message: "部门编码不能为空", trigger: "blur" },
@@ -144,12 +175,12 @@ export default {
             min: 1,
             max: 50,
             message: "部门编码长度为1-50个字符",
-            trigger: "blur",
+            trigger: "blur"
           },
-          { validator: checkCodeRepeat, trigger: "blur" },
+          { validator: checkCodeRepeat, trigger: "blur" }
         ],
         manager: [
-          { required: true, message: "部门负责人不能为空", trigger: "blur" },
+          { required: true, message: "部门负责人不能为空", trigger: "blur" }
         ],
         introduce: [
           { required: true, message: "部门介绍不能为空", trigger: "blur" },
@@ -157,12 +188,17 @@ export default {
             min: 1,
             max: 300,
             message: "部门介绍长度为1-300个字符",
-            trigger: "blur",
-          },
-        ],
+            trigger: "blur"
+          }
+        ]
       },
-      peoples: [],
+      peoples: []
     };
+  },
+  computed: {
+    showTitle() {
+      return this.formData.id ? "编辑部门" : "新增部门";
+    }
   },
   methods: {
     async getEmployeesSimple() {
@@ -175,7 +211,7 @@ export default {
       // 父组件调用子组件的方法 想设置 node数据 直接调用方法 props传值是异步的
     },
     btnOk() {
-      this.$refs.deptForm.validate(async (isOk) => {
+      this.$refs.deptForm.validate(async isOk => {
         // 表单校验通过
         if (isOk) {
           if (this.formData.id) {
@@ -197,20 +233,14 @@ export default {
         name: "",
         code: "",
         manager: "",
-        introduce: "",
+        introduce: ""
       };
       this.$emit("update:showDialog", false); //隐藏弹框
       // 清除之前的校验
       this.$refs.deptForm.resetFields(); //只能重置定义在data中的数据
-    },
-  },
-  computed: {
-    showTitle() {
-      return this.formData.id ? "编辑部门" : "新增部门";
-    },
-  },
+    }
+  }
 };
 </script>
 
-<style>
-</style>
+<style></style>

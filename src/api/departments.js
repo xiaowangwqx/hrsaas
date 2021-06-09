@@ -1,7 +1,8 @@
+// depaetments
 import request from '@/utils/request'
 
 // 获取组织架构的数据
-export function getDeparments() {
+export function getDepartments() {
     return request({
         url: '/company/department',
     })
@@ -43,6 +44,15 @@ export function updateDepartments(data) {
     return request({
         url: `/company/department/${data.id}`,
         method: 'PUT',
+        data
+    })
+}
+
+// 新增员工
+export function addEmployee(data) {
+    return request({
+        url: '/sys/user',
+        method: 'POST',
         data
     })
 }

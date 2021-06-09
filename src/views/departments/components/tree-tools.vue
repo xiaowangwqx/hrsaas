@@ -9,22 +9,36 @@
       <span>{{ treeNode.name }}</span>
     </el-col>
     <el-col :span="4">
-      <el-row type="flex" justify="end">
+      <el-row
+        type="flex"
+        justify="end"
+      >
         <el-col>{{ treeNode.manager }}</el-col>
         <el-col>
           <!-- 下拉菜单 -->
           <el-dropdown @command="operateDepts">
             <span class="el-dropdown-link">
-              操作<i class="el-icon-arrow-down el-icon--right"></i>
+              操作<i class="el-icon-arrow-down el-icon--right" />
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="add">添加子部门</el-dropdown-item>
-              <el-dropdown-item v-if="!isRoot" command="edit"
-                >编辑部门</el-dropdown-item
+              <el-dropdown-item
+                command="add"
+                :disabled="!checkPermission('add-dept')"
               >
-              <el-dropdown-item v-if="!isRoot" command="del"
-                >删除部门</el-dropdown-item
+                添加子部门
+              </el-dropdown-item>
+              <el-dropdown-item
+                v-if="!isRoot"
+                command="edit"
               >
+                编辑部门
+              </el-dropdown-item>
+              <el-dropdown-item
+                v-if="!isRoot"
+                command="del"
+              >
+                删除部门
+              </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </el-col>
@@ -34,18 +48,18 @@
 </template>
 
 <script>
-import { delDepartments } from "@/api/deparments";
+import { delDepartments } from "@/api/departments";
 export default {
   props: {
     // 定义传入的属性
     treeNode: {
       required: true,
-      type: Object,
+      type: Object
     },
     isRoot: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   methods: {
     // 点击编辑 删除 新增时触发
@@ -69,10 +83,9 @@ export default {
             this.$message.success("删除部门成功");
           });
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
-<style>
-</style>
+<style></style>
